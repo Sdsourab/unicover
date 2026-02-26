@@ -1,0 +1,683 @@
+
+
+/* ─── 1. CSS CUSTOM PROPERTIES (Tokens) ─── */
+:root {
+  --font-display : 'Cinzel', serif;
+  --font-body    : 'Lato', sans-serif;
+
+  /* Spacing scale */
+  --sp-xs  : 0.375rem;
+  --sp-sm  : 0.75rem;
+  --sp-md  : 1.25rem;
+  --sp-lg  : 2rem;
+  --sp-xl  : 3rem;
+
+  /* Radius */
+  --radius-sm : 8px;
+  --radius-md : 16px;
+  --radius-lg : 24px;
+
+  /* Transitions */
+  --ease      : cubic-bezier(.4,0,.2,1);
+  --duration  : 280ms;
+
+  /* Elevation / blur for glass */
+  --glass-blur      : 18px;
+  --glass-border    : 1px solid;
+  --glass-shadow-sm : 0 4px 24px rgba(0,0,0,.18);
+  --glass-shadow-lg : 0 12px 48px rgba(0,0,0,.28);
+
+  /* ── DARK THEME (default) ── */
+  --bg-base         : #0d0f1a;
+  --bg-surface      : rgba(255,255,255,0.055);
+  --bg-surface-hov  : rgba(255,255,255,0.09);
+  --bg-input        : rgba(255,255,255,0.07);
+  --bg-input-focus  : rgba(255,255,255,0.12);
+  --border-color    : rgba(255,255,255,0.12);
+  --border-focus    : rgba(139,92,246,0.7);
+  --text-primary    : #f0f2ff;
+  --text-secondary  : #a0a8c8;
+  --text-muted      : #6b75a0;
+  --accent-1        : #8b5cf6;   /* violet */
+  --accent-2        : #06b6d4;   /* cyan */
+  --accent-grad     : linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+  --fab-shadow      : 0 8px 32px rgba(139,92,246,.45);
+  --orb1-color      : rgba(139, 92,246,.25);
+  --orb2-color      : rgba(  6,182,212,.20);
+  --orb3-color      : rgba(244, 63,94,.18);
+  --legend-color    : #c4b5fd;
+  --req-color       : #f87171;
+  --error-bg        : rgba(239,68,68,.15);
+  --error-border    : rgba(239,68,68,.4);
+  --badge-bg        : rgba(16,185,129,.18);
+  --badge-color     : #34d399;
+  --footer-color    : rgba(160,168,200,.55);
+}
+
+/* ── LIGHT THEME overrides ── */
+[data-theme="light"] {
+  --bg-base         : #eef0f9;
+  --bg-surface      : rgba(255,255,255,0.60);
+  --bg-surface-hov  : rgba(255,255,255,0.80);
+  --bg-input        : rgba(255,255,255,0.75);
+  --bg-input-focus  : rgba(255,255,255,0.95);
+  --border-color    : rgba(100,116,180,0.20);
+  --border-focus    : rgba(109,40,217,0.6);
+  --text-primary    : #1e1b3a;
+  --text-secondary  : #4b5580;
+  --text-muted      : #8a93b8;
+  --accent-1        : #7c3aed;
+  --accent-2        : #0891b2;
+  --accent-grad     : linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
+  --fab-shadow      : 0 8px 32px rgba(124,58,237,.35);
+  --orb1-color      : rgba(167,139,250,.30);
+  --orb2-color      : rgba( 34,211,238,.22);
+  --orb3-color      : rgba(251,113,133,.18);
+  --legend-color    : #6d28d9;
+  --req-color       : #dc2626;
+  --error-bg        : rgba(220,38,38,.10);
+  --error-border    : rgba(220,38,38,.35);
+  --badge-bg        : rgba(5,150,105,.15);
+  --badge-color     : #059669;
+  --footer-color    : rgba(75,85,128,.60);
+}
+
+/* ─── 2. RESET & BASE ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family       : var(--font-body);
+  font-size         : clamp(0.875rem, 2.2vw, 1rem);
+  background-color  : var(--bg-base);
+  color             : var(--text-primary);
+  min-height        : 100dvh;
+  overflow-x        : hidden;
+  transition        : background-color var(--duration) var(--ease),
+                      color var(--duration) var(--ease);
+  position          : relative;
+}
+
+/* ─── 3. AMBIENT ORBs ─── */
+.orb {
+  position       : fixed;
+  border-radius  : 50%;
+  filter         : blur(90px);
+  pointer-events : none;
+  z-index        : 0;
+  will-change    : transform;
+  animation      : orbDrift 18s ease-in-out infinite alternate;
+}
+
+.orb--1 {
+  width      : 520px;
+  height     : 520px;
+  top        : -160px;
+  left       : -140px;
+  background : var(--orb1-color);
+  animation-duration: 20s;
+}
+.orb--2 {
+  width      : 420px;
+  height     : 420px;
+  bottom     : 10%;
+  right      : -100px;
+  background : var(--orb2-color);
+  animation-duration: 24s;
+  animation-delay: -8s;
+}
+.orb--3 {
+  width      : 300px;
+  height     : 300px;
+  top        : 50%;
+  left       : 55%;
+  background : var(--orb3-color);
+  animation-duration: 28s;
+  animation-delay: -14s;
+}
+
+@keyframes orbDrift {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(40px, 60px) scale(1.08); }
+}
+
+/* ─── 4. TOPBAR ─── */
+.topbar {
+  position         : sticky;
+  top              : 0;
+  z-index          : 100;
+  display          : flex;
+  align-items      : center;
+  justify-content  : space-between;
+  padding          : var(--sp-sm) var(--sp-lg);
+  background       : var(--bg-surface);
+  backdrop-filter  : blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom    : var(--glass-border) var(--border-color);
+  box-shadow       : 0 2px 16px rgba(0,0,0,.14);
+  transition       : background var(--duration) var(--ease);
+}
+
+.topbar__brand {
+  display     : flex;
+  align-items : center;
+  gap         : var(--sp-sm);
+}
+
+.topbar__logo {
+  width        : 44px;
+  height       : 44px;
+  border-radius: 50%;
+  object-fit   : contain;
+  background   : white;
+  padding      : 2px;
+  box-shadow   : 0 0 0 2px var(--accent-1);
+  transition   : transform var(--duration) var(--ease);
+}
+.topbar__logo:hover { transform: rotate(10deg) scale(1.08); }
+
+.topbar__wordmark { display: flex; flex-direction: column; line-height: 1.15; }
+
+.topbar__name {
+  font-family : var(--font-display);
+  font-size   : clamp(1rem, 3vw, 1.3rem);
+  font-weight : 700;
+  background  : var(--accent-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.topbar__powered {
+  font-size   : 0.65rem;
+  font-weight : 300;
+  color       : var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ─── 5. THEME TOGGLE ─── */
+.theme-toggle {
+  position  : relative;
+  display   : flex;
+  align-items: center;
+  gap       : var(--sp-xs);
+  background: var(--bg-input);
+  border    : var(--glass-border) var(--border-color);
+  border-radius: 999px;
+  padding   : 6px 14px;
+  cursor    : pointer;
+  font-size : 1rem;
+  color     : var(--text-secondary);
+  transition: background var(--duration) var(--ease),
+              border-color var(--duration) var(--ease),
+              box-shadow var(--duration) var(--ease);
+}
+.theme-toggle:hover {
+  background : var(--bg-input-focus);
+  border-color: var(--border-focus);
+  box-shadow : 0 0 0 3px rgba(139,92,246,.15);
+}
+
+/* show/hide sun and moon based on theme */
+[data-theme="dark"]  .theme-toggle__icon--sun  { display: none; }
+[data-theme="dark"]  .theme-toggle__icon--moon { display: inline; }
+[data-theme="light"] .theme-toggle__icon--moon { display: none; }
+[data-theme="light"] .theme-toggle__icon--sun  { display: inline; }
+
+/* ─── 6. MAIN CONTENT ─── */
+.main-content {
+  position       : relative;
+  z-index        : 1;
+  max-width      : 800px;
+  margin         : 0 auto;
+  padding        : var(--sp-lg) var(--sp-md) 140px;
+  /* 140px bottom padding gives space for FAB */
+}
+
+/* ─── 7. HERO ─── */
+.hero {
+  text-align    : center;
+  margin-bottom : var(--sp-lg);
+  padding-top   : var(--sp-md);
+  animation     : fadeUp 0.6s var(--ease) both;
+}
+
+.hero__title {
+  font-family   : var(--font-display);
+  font-size     : clamp(1.4rem, 5vw, 2.2rem);
+  font-weight   : 700;
+  background    : var(--accent-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.02em;
+  margin-bottom : var(--sp-xs);
+}
+
+.hero__sub {
+  color     : var(--text-secondary);
+  font-size : 0.95rem;
+  font-weight: 300;
+}
+.hero__sub strong { color: var(--accent-2); font-weight: 700; }
+
+/* ─── 8. GLASS CARD ─── */
+.glass-card {
+  background       : var(--bg-surface);
+  backdrop-filter  : blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border           : var(--glass-border) var(--border-color);
+  border-radius    : var(--radius-lg);
+  box-shadow       : var(--glass-shadow-lg);
+  padding          : var(--sp-lg);
+  transition       : background var(--duration) var(--ease),
+                     border-color var(--duration) var(--ease);
+  animation        : fadeUp 0.7s var(--ease) 0.1s both;
+}
+.glass-card:hover {
+  border-color: rgba(139,92,246,.22);
+}
+
+/* ─── 9. FORM SECTIONS ─── */
+.form-section {
+  border         : none;
+  padding        : 0;
+  margin-bottom  : var(--sp-lg);
+}
+.form-section:last-of-type { margin-bottom: 0; }
+
+.form-section__legend {
+  display       : flex;
+  align-items   : center;
+  gap           : var(--sp-xs);
+  font-family   : var(--font-display);
+  font-size     : 0.9rem;
+  font-weight   : 600;
+  color         : var(--legend-color);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom : var(--sp-md);
+  padding-bottom: var(--sp-sm);
+  border-bottom : 1px solid var(--border-color);
+  width         : 100%;
+}
+
+.legend-icon { font-size: 1.1rem; }
+
+/* ─── 10. FORM GROUPS ─── */
+.form-group {
+  display       : flex;
+  flex-direction: column;
+  gap           : 6px;
+  margin-bottom : var(--sp-md);
+}
+
+.form-row {
+  display  : grid;
+  grid-template-columns: 1fr 1fr;
+  gap      : var(--sp-md);
+}
+@media (max-width: 520px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+.form-label {
+  font-size     : 0.82rem;
+  font-weight   : 700;
+  color         : var(--text-secondary);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.req { color: var(--req-color); margin-left: 2px; }
+
+.form-input {
+  background    : var(--bg-input);
+  border        : 1px solid var(--border-color);
+  border-radius : var(--radius-sm);
+  padding       : 0.65rem 1rem;
+  font-family   : var(--font-body);
+  font-size     : 0.95rem;
+  color         : var(--text-primary);
+  width         : 100%;
+  transition    : background var(--duration) var(--ease),
+                  border-color var(--duration) var(--ease),
+                  box-shadow var(--duration) var(--ease),
+                  transform 150ms var(--ease);
+  outline       : none;
+  appearance    : none;
+  -webkit-appearance: none;
+}
+.form-input::placeholder { color: var(--text-muted); }
+
+.form-input:hover {
+  border-color: rgba(139,92,246,.35);
+  background  : var(--bg-input-focus);
+}
+
+.form-input:focus {
+  border-color: var(--border-focus);
+  background  : var(--bg-input-focus);
+  box-shadow  : 0 0 0 3px rgba(139,92,246,.18),
+                inset 0 1px 0 rgba(255,255,255,.06);
+  transform   : translateY(-1px);
+}
+
+.form-input:valid:not(:placeholder-shown):not(select) {
+  border-color: rgba(52,211,153,.45);
+}
+
+/* Select specific */
+.form-select {
+  cursor         : pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b5cf6' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat  : no-repeat;
+  background-position: right 14px center;
+  padding-right  : 40px;
+}
+
+/* Dark mode: native <option> elements ignore CSS vars — force dark colours explicitly */
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .form-select option {
+  background-color : #1a1d2e;
+  color            : #f0f2ff;
+}
+[data-theme="dark"] .form-select option:checked {
+  background-color : #2d2060;
+  color            : #ffffff;
+}
+
+/* Light mode options */
+[data-theme="light"] .form-select,
+[data-theme="light"] .form-select option {
+  background-color : #ffffff;
+  color            : #1e1b3a;
+}
+
+/* Date input */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: var(--date-filter, invert(1) brightness(0.6));
+  cursor: pointer;
+}
+[data-theme="light"] { --date-filter: none; }
+
+/* ─── 11. AUTOSAVE ROW ─── */
+.autosave-row {
+  display      : flex;
+  align-items  : center;
+  justify-content: space-between;
+  flex-wrap    : wrap;
+  gap          : var(--sp-sm);
+  margin-top   : var(--sp-md);
+  padding-top  : var(--sp-sm);
+  border-top   : 1px dashed var(--border-color);
+}
+
+/* Toggle switch */
+.toggle-label {
+  display    : flex;
+  align-items: center;
+  gap        : var(--sp-sm);
+  cursor     : pointer;
+  user-select: none;
+}
+.toggle-label input[type="checkbox"] { display: none; }
+
+.toggle-pill {
+  width         : 44px;
+  height        : 24px;
+  background    : var(--bg-input);
+  border        : 1px solid var(--border-color);
+  border-radius : 999px;
+  position      : relative;
+  transition    : background var(--duration) var(--ease),
+                  border-color var(--duration) var(--ease);
+}
+.toggle-pill::after {
+  content       : '';
+  position      : absolute;
+  top           : 3px;
+  left          : 3px;
+  width         : 16px;
+  height        : 16px;
+  border-radius : 50%;
+  background    : var(--text-muted);
+  transition    : transform var(--duration) var(--ease),
+                  background var(--duration) var(--ease);
+}
+.toggle-label input:checked + .toggle-pill {
+  background   : rgba(139,92,246,.3);
+  border-color : var(--accent-1);
+}
+.toggle-label input:checked + .toggle-pill::after {
+  transform  : translateX(20px);
+  background : var(--accent-1);
+}
+
+.toggle-text {
+  font-size  : 0.82rem;
+  color      : var(--text-secondary);
+}
+
+.btn-clear {
+  background    : transparent;
+  border        : 1px solid var(--border-color);
+  border-radius : var(--radius-sm);
+  padding       : 5px 12px;
+  font-family   : var(--font-body);
+  font-size     : 0.78rem;
+  color         : var(--text-muted);
+  cursor        : pointer;
+  transition    : all var(--duration) var(--ease);
+}
+.btn-clear:hover {
+  border-color: var(--req-color);
+  color       : var(--req-color);
+  background  : rgba(239,68,68,.08);
+}
+
+/* ─── 12. AUTOSAVE BADGE ─── */
+.autosave-badge {
+  margin-left   : auto;
+  font-size     : 0.7rem;
+  font-weight   : 700;
+  background    : var(--badge-bg);
+  color         : var(--badge-color);
+  border-radius : 999px;
+  padding       : 2px 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity       : 0;
+  transition    : opacity 400ms var(--ease);
+}
+.autosave-badge.visible { opacity: 1; }
+
+/* ─── 13. ERROR BANNER ─── */
+.error-banner {
+  display       : flex;
+  align-items   : center;
+  gap           : var(--sp-sm);
+  background    : var(--error-bg);
+  border        : 1px solid var(--error-border);
+  border-radius : var(--radius-sm);
+  padding       : var(--sp-sm) var(--sp-md);
+  margin-top    : var(--sp-md);
+  color         : var(--req-color);
+  font-size     : 0.875rem;
+  animation     : shake 0.45s var(--ease);
+}
+.error-banner[hidden] { display: none; }
+.error-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+@keyframes shake {
+  0%,100%{ transform: translateX(0); }
+  20%    { transform: translateX(-8px); }
+  40%    { transform: translateX( 8px); }
+  60%    { transform: translateX(-5px); }
+  80%    { transform: translateX( 5px); }
+}
+
+/* ─── 14. FLOATING ACTION BUTTON ─── */
+.fab {
+  position      : fixed;
+  bottom        : 2rem;
+  right         : 1.5rem;
+  z-index       : 200;
+  display       : flex;
+  align-items   : center;
+  gap           : 10px;
+  padding       : 0.9rem 1.6rem;
+  border        : none;
+  border-radius : 999px;
+  background    : var(--accent-grad);
+  color         : #fff;
+  font-family   : var(--font-body);
+  font-size     : 0.95rem;
+  font-weight   : 700;
+  letter-spacing: 0.03em;
+  cursor        : pointer;
+  box-shadow    : var(--fab-shadow);
+  overflow      : hidden;
+  transition    : transform 200ms var(--ease),
+                  box-shadow 200ms var(--ease),
+                  filter 200ms var(--ease);
+  animation     : fabEntrance 0.8s 0.4s var(--ease) both;
+}
+.fab:hover {
+  transform  : translateY(-3px) scale(1.04);
+  box-shadow : 0 14px 40px rgba(139,92,246,.55);
+  filter     : brightness(1.08);
+}
+.fab:active { transform: scale(0.97); }
+.fab:focus-visible {
+  outline    : 3px solid var(--accent-2);
+  outline-offset: 4px;
+}
+
+/* Ripple inside FAB */
+.fab__ripple {
+  position      : absolute;
+  border-radius : 50%;
+  width         : 0;
+  height        : 0;
+  background    : rgba(255,255,255,0.3);
+  transform     : translate(-50%,-50%);
+  pointer-events: none;
+}
+.fab.rippling .fab__ripple {
+  animation: rippleExpand 0.6s var(--ease) forwards;
+}
+@keyframes rippleExpand {
+  from { width: 0; height: 0; opacity: 1; }
+  to   { width: 360px; height: 360px; opacity: 0; }
+}
+
+.fab.loading {
+  pointer-events: none;
+  opacity       : 0.75;
+}
+
+.fab__icon { font-size: 1.2rem; }
+
+@keyframes fabEntrance {
+  from { transform: translateY(80px) scale(0.8); opacity: 0; }
+  to   { transform: translateY(0) scale(1);    opacity: 1; }
+}
+
+/* ─── 15. LOADING OVERLAY ─── */
+.loading-overlay {
+  position  : fixed;
+  inset     : 0;
+  z-index   : 300;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+  display   : flex;
+  align-items: center;
+  justify-content: center;
+  animation : fadeIn 200ms var(--ease);
+}
+.loading-overlay[hidden] { display: none; }
+
+.spinner {
+  display        : flex;
+  flex-direction : column;
+  align-items    : center;
+  gap            : var(--sp-md);
+}
+
+.spinner__ring {
+  width         : 56px;
+  height        : 56px;
+  border        : 4px solid rgba(255,255,255,.12);
+  border-top-color: var(--accent-1);
+  border-radius : 50%;
+  animation     : spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.spinner__text {
+  font-size     : 0.9rem;
+  color         : rgba(255,255,255,.7);
+  font-weight   : 300;
+  letter-spacing: 0.06em;
+}
+
+/* ─── 16. SITE FOOTER ─── */
+.site-footer {
+  position   : relative;
+  z-index    : 1;
+  text-align : center;
+  padding    : var(--sp-md) var(--sp-md) var(--sp-lg);
+  font-size  : 0.75rem;
+  color      : var(--footer-color);
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  border-top : 1px solid var(--border-color);
+}
+.site-footer strong {
+  color      : var(--text-muted);
+  font-weight: 700;
+}
+
+/* ─── 17. UTILITY ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── 18. SCROLLBAR ─── */
+::-webkit-scrollbar         { width: 6px; }
+::-webkit-scrollbar-track   { background: transparent; }
+::-webkit-scrollbar-thumb   { background: rgba(139,92,246,.35); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,.6); }
+
+/* ─── 19. SELECTION ─── */
+::selection { background: rgba(139,92,246,.35); color: #fff; }
+
+/* ─── 20. RESPONSIVE TWEAKS ─── */
+@media (max-width: 600px) {
+  .glass-card { padding: var(--sp-md); border-radius: var(--radius-md); }
+  .fab        { right: 50%; transform: translateX(50%) translateY(0); bottom: 1.25rem; }
+  .fab:hover  { transform: translateX(50%) translateY(-3px) scale(1.04); }
+  .fab:active { transform: translateX(50%) scale(0.97); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

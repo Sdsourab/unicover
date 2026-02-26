@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UniCover — Powered by Finoptiv</title>
+
+  <!-- Google Fonts: Cinzel (display) + Lato (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <!-- pdfmake CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- -
+       BACKGROUND ORBS (ambient glow blobs)
+  - -->
+  <div class="orb orb--1" aria-hidden="true"></div>
+  <div class="orb orb--2" aria-hidden="true"></div>
+  <div class="orb orb--3" aria-hidden="true"></div>
+
+  <!-- -
+       HEADER BAR
+  - -->
+  <header class="topbar" role="banner">
+    <div class="topbar__brand">
+      <img src="Rabindra_University_Logo.svg" alt="Rabindra University Logo" class="topbar__logo" />
+      <div class="topbar__wordmark">
+        <span class="topbar__name">UniCover</span>
+        <span class="topbar__powered">Powered by Finoptiv</span>
+      </div>
+    </div>
+
+    <!-- Dark / Light mode toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+      <span class="theme-toggle__icon theme-toggle__icon--moon">🌙</span>
+      <span class="theme-toggle__icon theme-toggle__icon--sun">☀️</span>
+      <span class="theme-toggle__track" aria-hidden="true"></span>
+    </button>
+  </header>
+
+  <!-- -
+       MAIN CONTENT
+  - -->
+  <main class="main-content" role="main">
+
+    <!-- Page hero heading -->
+    <section class="hero" aria-label="App introduction">
+      <h1 class="hero__title">RUB Academic Cover Generator</h1>
+      <p class="hero__sub">Fill in your assignment details and export a <strong>crystal-clear PDF</strong> in seconds.</p>
+    </section>
+
+    <!-- ─── FORM CARD ─── -->
+    <form id="coverForm" class="glass-card form-card" novalidate aria-label="Cover page form">
+
+      <!-- ─ Section: Assignment Info ─ -->
+      <fieldset class="form-section">
+        <legend class="form-section__legend">
+          <span class="legend-icon"></span> Assignment Details
+        </legend>
+
+        <div class="form-group">
+          <label class="form-label" for="assignmentTopic">Assignment Topic <span class="req">*</span></label>
+          <input class="form-input" type="text" id="assignmentTopic" name="assignmentTopic"
+                 placeholder="e.g. Impact of Inflation on GDP" required autocomplete="off" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="courseTitle">Course Title <span class="req">*</span></label>
+            <input class="form-input" type="text" id="courseTitle" name="courseTitle"
+                   placeholder="e.g. Macroeconomics" required autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="courseCode">Course Code <span class="req">*</span></label>
+            <input class="form-input" type="text" id="courseCode" name="courseCode"
+                   placeholder="e.g. ECO 301" required autocomplete="off" />
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- ─ Section: Teacher Info ─ -->
+      <fieldset class="form-section">
+        <legend class="form-section__legend">
+          <span class="legend-icon">🎓</span> Submitted To (Teacher)
+        </legend>
+
+        <div class="form-group">
+          <label class="form-label" for="teacherName">Teacher's Name <span class="req">*</span></label>
+          <input class="form-input" type="text" id="teacherName" name="teacherName"
+                 placeholder="e.g. Dr. Md. Rafiqul Islam" required autocomplete="off" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="teacherDesignation">Designation</label>
+            <input class="form-input" type="text" id="teacherDesignation" name="teacherDesignation"
+                   placeholder="e.g. Associate Professor" autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="teacherDept">Department</label>
+            <input class="form-input" type="text" id="teacherDept" name="teacherDept"
+                   placeholder="e.g. Economics" autocomplete="off" />
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- ─ Section: Student Info ─ -->
+      <fieldset class="form-section">
+        <legend class="form-section__legend">
+          <span class="legend-icon"></span> Submitted By (Student)
+          <span class="autosave-badge" id="autosaveBadge" aria-live="polite"></span>
+        </legend>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="studentName">Full Name <span class="req">*</span></label>
+            <input class="form-input" type="text" id="studentName" name="studentName"
+                   placeholder="e.g. Sourab Dey Soptom" required autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="studentId">Student ID <span class="req">*</span></label>
+            <input class="form-input" type="text" id="studentId" name="studentId"
+                   placeholder="e.g. 2021-1-60-001" required autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="studentSession">Session <span class="req">*</span></label>
+            <input class="form-input" type="text" id="studentSession" name="studentSession"
+                   placeholder="e.g. 2021-22" required autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="studentDept">Department <span class="req">*</span></label>
+            <select class="form-input form-select" id="studentDept" name="studentDept" required>
+              <option value="" disabled selected>Select Department</option>
+              <option value="Management">Management</option>
+              <option value="Bangla">Bangla</option>
+              <option value="Economics">Economics</option>
+              <option value="Sociology">Sociology</option>
+              <option value="Music">Music</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="submissionDate">Date of Submission</label>
+          <input class="form-input" type="date" id="submissionDate" name="submissionDate" />
+        </div>
+
+        <!-- Auto-save controls -->
+        <div class="autosave-row">
+          <label class="toggle-label">
+            <input type="checkbox" id="autoSaveToggle" checked />
+            <span class="toggle-pill"></span>
+            <span class="toggle-text">Remember my student info</span>
+          </label>
+          <button type="button" class="btn-clear" id="clearSavedBtn" title="Clear saved student data">
+            🗑 Clear Saved
+          </button>
+        </div>
+      </fieldset>
+
+      <!-- ─ Validation error banner ─ -->
+      <div class="error-banner" id="errorBanner" role="alert" aria-live="assertive" hidden>
+        <span class="error-icon">⚠️</span>
+        <span id="errorMessage">Please fill all required fields.</span>
+      </div>
+
+    </form><!-- /coverForm -->
+
+  </main>
+
+  <!-- -
+       FLOATING ACTION BUTTON — Generate PDF
+  - -->
+  <button class="fab" id="generateBtn" aria-label="Generate PDF cover page" title="Generate PDF">
+    <span class="fab__icon" aria-hidden="true">⬇</span>
+    <span class="fab__label">Generate PDF</span>
+    <span class="fab__ripple" aria-hidden="true"></span>
+  </button>
+
+  <!-- -
+       LOADING OVERLAY
+  - -->
+  <div class="loading-overlay" id="loadingOverlay" hidden aria-hidden="true">
+    <div class="spinner" role="status">
+      <div class="spinner__ring"></div>
+      <span class="spinner__text">Crafting your PDF…</span>
+    </div>
+  </div>
+
+  <!-- -
+       FOOTER
+  - -->
+  <footer class="site-footer" role="contentinfo">
+    Crafted with  by <strong>Sourab Dey Soptom</strong> &nbsp;|&nbsp; Powered by <strong>Finoptiv</strong>
+  </footer>
+
+  <!-- Hidden canvas used to convert SVG logo → PNG for pdfmake -->
+  <canvas id="logoCanvas" style="display:none" width="200" height="200" aria-hidden="true"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
