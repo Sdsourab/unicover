@@ -1,9 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   UniCover — style.css
-   Glassmorphism · Mobile-first · Dark/Light mode
-   Crafted by Sourab Dey Soptom | Powered by Finoptiv
-═══════════════════════════════════════════════════════════ */
-
 /* ─── 1. CSS CUSTOM PROPERTIES (Tokens) ─── */
 :root {
   --font-display : 'Cinzel', serif;
@@ -684,4 +678,227 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+/* ════════════════════════════════════════════════════════════════
+   UniCover v2.0 — Additions
+   jsPDF edition: Language toggle · Form select · Input error state
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── Topbar controls row (wraps lang btn + theme toggle) ─── */
+.topbar__controls {
+  display    : flex;
+  align-items: center;
+  gap        : 0.55rem;
+  flex-shrink: 0;
+}
+
+/* ─── Font-load status pill ─── */
+.font-status {
+  font-size      : 0.7rem;
+  font-weight    : 700;
+  letter-spacing : 0.03em;
+  color          : var(--text-muted);
+  white-space    : nowrap;
+  padding        : 0.2rem 0.6rem;
+  border-radius  : 999px;
+  background     : rgba(255,255,255,0.06);
+  border         : 1px solid var(--border-color);
+  transition     : opacity 0.4s;
+}
+
+/* ─── Language-toggle button ─── */
+.btn-lang {
+  font-family    : 'Lato', sans-serif;
+  font-size      : 0.78rem;
+  font-weight    : 700;
+  letter-spacing : 0.05em;
+  padding        : 0.35rem 0.9rem;
+  border-radius  : 999px;
+  border         : 1.5px solid var(--accent-1);
+  background     : transparent;
+  color          : var(--accent-1);
+  cursor         : pointer;
+  transition     : background var(--duration) var(--ease),
+                   color     var(--duration) var(--ease);
+  white-space    : nowrap;
+}
+.btn-lang:hover {
+  background : var(--accent-1);
+  color      : #fff;
+}
+.btn-lang:focus-visible {
+  outline       : 2px solid var(--accent-1);
+  outline-offset: 2px;
+}
+
+/* ─── Form select (dropdown arrow + padding) ─── */
+.form-select {
+  appearance         : none;
+  -webkit-appearance : none;
+  background-image   : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238b5cf6' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat  : no-repeat;
+  background-position: right 0.9rem center;
+  padding-right      : 2.4rem;
+  cursor             : pointer;
+}
+[data-theme="light"] .form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%237c3aed' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+}
+
+/* ─── Input error state ─── */
+.input-error {
+  border-color : #ef4444 !important;
+  box-shadow   : 0 0 0 3px rgba(239, 68, 68, 0.18) !important;
+}
+
+/* ─── FAB label text (for translation target) ─── */
+.fab__label { letter-spacing: 0.02em; }
+
+/* ─── Date input width constraint ─── */
+input[type="date"].form-input {
+  max-width: 220px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   UniCover v2.0 — Logo Option Section
+   ════════════════════════════════════════════════════════════════ */
+
+.logo-option-section { }
+
+/* Row: preview left, controls right */
+.logo-option-row {
+  display    : flex;
+  align-items: center;
+  gap        : 1.5rem;
+  flex-wrap  : wrap;
+}
+
+/* ── Logo preview circle ── */
+.logo-preview-wrap {
+  position      : relative;
+  width         : 72px;
+  height        : 72px;
+  flex-shrink   : 0;
+  border-radius : 50%;
+  background    : rgba(255,255,255,0.08);
+  border        : 2px solid var(--accent-1);
+  display       : flex;
+  align-items   : center;
+  justify-content: center;
+  box-shadow    : 0 0 0 4px rgba(139,92,246,0.12),
+                  0 4px 16px rgba(0,0,0,0.25);
+  transition    : opacity 0.3s var(--ease),
+                  transform 0.3s var(--ease),
+                  box-shadow 0.3s var(--ease);
+  overflow      : visible;
+}
+[data-theme="light"] .logo-preview-wrap {
+  background : rgba(255,255,255,0.85);
+  box-shadow : 0 0 0 4px rgba(124,58,237,0.10),
+               0 4px 16px rgba(0,0,0,0.12);
+}
+
+.logo-preview-img {
+  width        : 52px;
+  height       : 52px;
+  object-fit   : contain;
+  border-radius: 50%;
+  display      : block;
+  transition   : opacity 0.3s, filter 0.3s;
+}
+
+/* Animated outer ring */
+.logo-preview-ring {
+  position     : absolute;
+  inset        : -6px;
+  border-radius: 50%;
+  border       : 1.5px dashed rgba(139,92,246,0.4);
+  animation    : ringRotate 12s linear infinite;
+  pointer-events: none;
+}
+@keyframes ringRotate {
+  to { transform: rotate(360deg); }
+}
+[data-theme="light"] .logo-preview-ring {
+  border-color: rgba(124,58,237,0.3);
+}
+
+/* Hidden state */
+.logo-preview--hidden .logo-preview-img {
+  opacity: 0.15;
+  filter : grayscale(1);
+}
+.logo-preview--hidden {
+  opacity  : 0.4;
+  transform: scale(0.92);
+  box-shadow: none;
+}
+.logo-preview--hidden .logo-preview-ring {
+  animation: none;
+  opacity  : 0;
+}
+
+/* ── Controls ── */
+.logo-option-controls {
+  display       : flex;
+  flex-direction: column;
+  gap           : 0.5rem;
+}
+
+.logo-toggle-label {
+  display    : flex;
+  align-items: center;
+  gap        : 0.6rem;
+  cursor     : pointer;
+  user-select: none;
+}
+.logo-toggle-label input[type="checkbox"] {
+  display: none;
+}
+
+/* Reuse the existing .toggle-pill style from base CSS */
+.logo-toggle-label .toggle-pill {
+  width           : 40px;
+  height          : 22px;
+  border-radius   : 999px;
+  background      : var(--bg-input);
+  border          : 1.5px solid var(--border-color);
+  position        : relative;
+  flex-shrink     : 0;
+  transition      : background var(--duration), border-color var(--duration);
+}
+.logo-toggle-label .toggle-pill::after {
+  content       : '';
+  position      : absolute;
+  top           : 2px;
+  left          : 2px;
+  width         : 14px;
+  height        : 14px;
+  border-radius : 50%;
+  background    : var(--text-muted);
+  transition    : transform var(--duration) var(--ease), background var(--duration);
+}
+.logo-toggle-label input:checked + .toggle-pill {
+  background   : rgba(139,92,246,0.18);
+  border-color : var(--accent-1);
+}
+.logo-toggle-label input:checked + .toggle-pill::after {
+  transform  : translateX(18px);
+  background : var(--accent-1);
+}
+
+.logo-toggle-text {
+  font-size  : 0.875rem;
+  font-weight: 600;
+  color      : var(--text-primary);
+}
+
+.logo-option-hint {
+  font-size  : 0.75rem;
+  color      : var(--text-muted);
+  margin     : 0;
+  line-height: 1.45;
+  max-width  : 260px;
+  transition : opacity 0.3s;
 }
