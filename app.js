@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   UniCover — app.js
-   Vanilla JavaScript · pdfmake PDF Engine · localStorage
-   Crafted by Sourab Dey Soptom | Powered by Finoptiv
-═══════════════════════════════════════════════════════════ */
 
 /* ──────────────────────────────────────────────────────────
    SECTION 1: CONSTANTS & CONFIGURATION
@@ -286,28 +281,7 @@ function collectFormData () {
 }
 
 /**
- * Builds and downloads the PDF — styled exactly like the reference design:
- *
- *   ┌─────────────────────────────────────┐
- *   │        [Logo]                       │
- *   │   Rabindra University, Bangladesh   │
- *   │  ─────────────────────────────────  │
- *   │          Assignment on              │
- *   │  ─────────────────────────────────  │
- *   │       [Topic text]                  │
- *   │  Course Title: ...                  │
- *   │  Course code: ...                   │
- *   │  ─────────────────────────────────  │
- *   │  Submitted to:    Submitted by:     │  ← large faint watermark behind
- *   │  [teacher info]   [student info]    │
- *   │  ─────────────────────────────────  │
- *   │       Submission date: ...          │
- *   │     Department of ...               │
- *   │   Rabindra University, Bangladesh   │
- *   └─────────────────────────────────────┘
- *
- * @param {string|null} logoPng      PNG data-URL for the header logo
- * @param {string|null} watermarkPng PNG data-URL for the faint background logo
+ the rendar page 
  */
 async function buildAndDownloadPdf (logoPng, watermarkPng) {
   const data = collectFormData();
