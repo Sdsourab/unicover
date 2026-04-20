@@ -449,13 +449,9 @@ function buildPDF(logoPng, watermarkPng) {
   setF(15, true);
   doc.text(tr.uniName, CX, 39, { align: 'center' });
 
-  hr(44);
-
   /* ── "Assignment on" ── */
   setF(13, true);
   doc.text(tr.assignOn, CX, 50, { align: 'center' });
-
-  hr(55);
 
   /* ── Topic (bold, wrapped) ── */
   const topic   = (document.getElementById('assignmentTopic').value || '').trim();
@@ -473,7 +469,6 @@ function buildPDF(logoPng, watermarkPng) {
   doc.text(`${tr.courseTitle}${courseT}`, CX, curY, { align: 'center' }); curY += 8;
   doc.text(`${tr.courseCode}${courseC}`,  CX, curY, { align: 'center' }); curY += 8;
 
-  hr(curY);
   const hr3Y = curY;
 
   /* ── Submitted To (teacher — left) ── */
