@@ -1,4 +1,3 @@
-
 'use strict';
 
 /* -
@@ -44,8 +43,8 @@ const T = {
     pSId         : 'e.g. 2021-1-60-001',
     pSSession    : 'e.g. 2021-22',
     selectDept   : 'Select Department',
-    submittedTo  : 'Submitted to:',
-    submittedBy  : 'Submitted by:',
+    submittedTo  : 'Submitted To',
+    submittedBy  : 'Submitted By',
     assignOn     : 'Assignment on',
     courseTitle  : 'Course Title: ',
     courseCode   : 'Course code: ',
@@ -81,8 +80,8 @@ const T = {
     pSId         : 'যেমন: ২০২১-১-৬০-০০১',
     pSSession    : 'যেমন: ২০২১-২২',
     selectDept   : 'বিভাগ নির্বাচন করুন',
-    submittedTo  : 'জমা দিচ্ছি:',
-    submittedBy  : 'জমাকারী:',
+    submittedTo  : 'জমা দিচ্ছি',
+    submittedBy  : 'জমাকারী',
     assignOn     : 'অ্যাসাইনমেন্ট',
     courseTitle  : 'কোর্সের নাম: ',
     courseCode   : 'কোর্স কোড: ',
@@ -438,38 +437,25 @@ function buildPDF(logoPng, watermarkPng) {
     doc.addImage(watermarkPng, 'PNG', CX - wSz / 2, PH / 2 - wSz / 2, wSz, wSz);
   }
 
-  /* ── Logo  (styled: white circle bg + thin ring border + centred image) ── */
+  /* ── Logo (no circle, no ring — just the seal image) ── */
   const showLogo = document.getElementById('logoToggle')?.checked !== false;
   if (logoPng && showLogo) {
     const LOGO_SIZE = 26;
-    const LOGO_CY   = 10 + LOGO_SIZE / 2;  // vertical centre = 23
-    const RING_R    = LOGO_SIZE / 2 + 1.5; // ring sits 1.5mm outside logo
-
-    /* 1. White filled circle — clean background behind the seal */
-    doc.setFillColor(255, 255, 255);
-    doc.circle(CX, LOGO_CY, RING_R + 0.5, 'F');
-
-    /* 2. Thin decorative ring */
-    doc.setDrawColor(180, 180, 180);
-    doc.setLineWidth(0.35);
-    doc.circle(CX, LOGO_CY, RING_R);
-
-    /* 3. Logo image centred inside the ring */
     doc.addImage(logoPng, 'PNG', CX - LOGO_SIZE / 2, 10, LOGO_SIZE, LOGO_SIZE);
   }
 
   /* ── University name — sits below logo (26mm tall + 6mm gap = Y 42) ── */
   doc.setTextColor(15, 15, 15);
   setF(15, true);
-  doc.text(tr.uniName, CX, 42, { align: 'center' });
+  doc.text(tr.uniName, CX, 39, { align: 'center' });
 
-  hr(47);
+  hr(44);
 
   /* ── "Assignment on" ── */
   setF(13, true);
-  doc.text(tr.assignOn, CX, 54, { align: 'center' });
+  doc.text(tr.assignOn, CX, 50, { align: 'center' });
 
-  hr(59);
+  hr(55);
 
   /* ── Topic (bold, wrapped) ── */
   const topic   = (document.getElementById('assignmentTopic').value || '').trim();
@@ -478,7 +464,7 @@ function buildPDF(logoPng, watermarkPng) {
 
   setF(12.5, true);
   const topicLines = doc.splitTextToSize(topic, CW - 8);
-  let curY = 68;
+  let curY = 63;
   topicLines.forEach(ln => { doc.text(ln, CX, curY, { align: 'center' }); curY += 7; });
 
   /* ── Course title & code ── */
@@ -535,8 +521,13 @@ function buildPDF(logoPng, watermarkPng) {
   const hrBtmY = Math.max(byY + 8, 250);
   hr(hrBtmY);
 
-  /* ── Date / Dept / Uni (centred)  ★ BLUE BOX Y ≈ 261 ── */
-  let btmY = Math.max(hrBtmY + 11, 261);
+  /* ── Dept / Uni / Date (centred) ── */
+  let btmY = Math.max(hrBtmY + 10, 259);
+
+  setF(12, true);
+  doc.setTextColor(10, 10, 10);
+  doc.text(`${tr.deptOf} ${deptDisp}`, CX, btmY, { align: 'center' }); btmY += 8;
+  doc.text(tr.uniName,                 CX, btmY, { align: 'center' }); btmY += 12;
 
   const dateEl = document.getElementById('submissionDate');
   if (dateEl && dateEl.value) {
@@ -545,13 +536,7 @@ function buildPDF(logoPng, watermarkPng) {
     setF(11, false);
     doc.setTextColor(30, 30, 30);
     doc.text(`${tr.subDate}${dateStr}`, CX, btmY, { align: 'center' });
-    btmY += 9;
   }
-
-  setF(12, true);
-  doc.setTextColor(10, 10, 10);
-  doc.text(`${tr.deptOf} ${deptDisp}`, CX, btmY, { align: 'center' }); btmY += 8;
-  doc.text(tr.uniName,                 CX, btmY, { align: 'center' });
 
   /* ── Save ── */
   const safeName = topic
